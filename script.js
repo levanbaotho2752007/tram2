@@ -1,6 +1,6 @@
-//fix code by btho source gốc không nhớ :(((
 const toggle = document.querySelector(".toggle__theme");
 const card = document.querySelector(".app");
+
 toggle.addEventListener("click", () => {
     let theme = toggle.querySelector(".fas");
     if (theme.classList.contains("fa-moon")) {
@@ -8,55 +8,58 @@ toggle.addEventListener("click", () => {
         theme.classList.add("fa-sun");
         card.classList.add("dark");
     } else {
-
         theme.classList.remove("fa-sun");
         theme.classList.add("fa-moon");
         card.classList.remove("dark");
-
     }
-})
+});
 
-function killCopy(e){
-    return false;
+const modal = document.getElementById("modal-popup");
+const modalImg = document.getElementById("modal-img");
+const modalClose = document.getElementById("modal-close");
+const modalTriggers = document.querySelectorAll(".js-modal-trigger");
+
+modalTriggers.forEach(trigger => {
+    trigger.addEventListener("click", (e) => {
+        e.preventDefault();
+        const imgSrc = trigger.getAttribute("data-img");
+        modalImg.src = imgSrc;
+        modal.classList.add("active");
+    });
+});
+
+function closeModal() {
+    modal.classList.remove("active");
+    modalImg.src = "";
 }
 
-function reEnable(){
-    return true;
+if (modalClose) {
+    modalClose.addEventListener("click", closeModal);
 }
 
-document.onselectstart=new Function ("return false");
-
-if (window.sidebar){
-    document.onmousedown=killCopy;
-    document.onclick=reEnable;
+if (modal) {
+    modal.addEventListener("click", (e) => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
 }
 
-function noteOut()
-{
-    var note = document.querySelector(".note");
-    note.style.display = "none";
-}
-
-setInterval(noteOut,3000);
+document.onselectstart = function() { return false; };
 
 window.onload = function() {
     document.addEventListener("contextmenu", function(e) {
         e.preventDefault();
     }, false);
+
     document.addEventListener("keydown", function(e) {
-        if (e.ctrlKey && e.shiftKey && e.keyCode == 73) {
+        if ((e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) || e.keyCode === 123) {
             disabledEvent(e);
         }
-        if (e.ctrlKey && e.shiftKey && e.keyCode == 74) {
+        if (e.keyCode === 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
             disabledEvent(e);
         }
-        if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
-            disabledEvent(e);
-        }
-        if (e.ctrlKey && e.keyCode == 85) {
-            disabledEvent(e);
-        }
-        if (event.keyCode == 123) {
+        if (e.ctrlKey && e.keyCode === 85) {
             disabledEvent(e);
         }
     }, false);
@@ -71,18 +74,10 @@ window.onload = function() {
         return false;
     }
 };
+
 document.onkeydown = function(e) {
-    if (e.ctrlKey && 
-        (e.keyCode === 67 || 
-         e.keyCode === 86 || 
-         e.keyCode === 85 || 
-         e.keyCode === 117)) {
+    if (e.ctrlKey && (e.keyCode === 67 || e.keyCode === 86 || e.keyCode === 85 || e.keyCode === 117)) {
         return false;
-    } else {
-        return true;
     }
+    return true;
 };
-$(document).keypress("u",function(e) {
-    if(e.ctrlKey) return false;
-    else return true;
-});
